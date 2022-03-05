@@ -22,7 +22,7 @@ We offer a few routes to understanding how to use this structure:
 1. [A dive into the rationale behind it](docs/rationale.md)
 
 
-### What do I expect you know already?
+## What do I expect you know already?
 
 This guide is targeted at people who already have some exposure to scientific computing and, in some places, machine learning.
 Specifically, you should be familiar with:
