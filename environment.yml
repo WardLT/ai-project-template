@@ -1,0 +1,22 @@
+name: aiproj  # Change this to your project's name
+channels:
+  - defaults
+  - conda-forge
+dependencies:
+  - python==3.9.*
+  
+  # General requirements for making plots and managing results
+  - pandas==1.*
+  - matplotlib==3.*
+  - sklearn==1.0.*
+  
+  # Putting Jupyter in this environment
+  #  (I find having a dedicated Jupyter for each environment easier than managing kernels)
+  - jupyterlab
+  
+  # Key tools for software development
+  - pytest
+  
+  # Put any requirements from pypi here
+  - pip
+  - pip:

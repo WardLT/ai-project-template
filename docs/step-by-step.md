@@ -81,7 +81,7 @@ conda env create --file environment.yml --force
 
 Once you've done this, follow Anaconda's instructions to active your new environment and get ready to do reproducible research!
 
-> **Note**: Rather than adding new packages to an environment using `conda install`, I typically edit the environment file and re-build the environemnt from scratch. Rebuilding it myself each time I make changes helps ensure someone else can build it later.
+> **Note**: Rather than adding new packages to an environment using `conda install`, I typically edit the environment file and re-build the environment from scratch. Rebuilding it myself each time I make changes helps ensure someone else can build it later.
 
 ## Storing your raw data
 
@@ -102,7 +102,7 @@ Download your raw data into the `data/raw` folder and place a text file (in Mark
 
 ### Sidebar: How to share your data
 
-Your raw and processed data may be too large to store in `git` on GitHub, which is best for files smaller than 10MB. If it's not, commit your data to GitHub (`git add` then `git commit`) and rest comfortably that it is accessible to tohers.
+Your raw and processed data may be too large to store in `git` on GitHub, which is best for files smaller than 10MB. If it's not, commit your data to GitHub (`git add` then `git commit`) and rest comfortably that it is accessible to others.
 
 Instead, my recommendation is to place them on a data source your team can access (e.g., at a computing center, Box) for now and be prepared to publish them later. We'll talk [about publication in a later section](#some-time-later-publication).
 
@@ -114,7 +114,7 @@ Start off by writing a notebook that reads in your data then saves it to the `da
 
 My recommendation is to stick to formats that are easy to use in other codes, such as JSON, CSV, or HDF5.
 
-Once you are done with the notebook, be sure to "Restart and Run All" before saving it and commiting the notebook into your repository (i.e., `git add <your notebook>`, `git commit`).
+Once you are done with the notebook, be sure to "Restart and Run All" before saving it and committing the notebook into your repository (i.e., `git add <your notebook>`, `git commit`).
 Commit your data if it is small enough (<10 MB).
 
 ### Effective Jupyter
@@ -138,10 +138,79 @@ The rest of the notebook is a series of subsections (labeled with a header) each
 
 I'm not perfect about following this pattern but, when I do, my notebooks are easily understood by others.
 
-## A second notebook: performing repeatable analysis
+## A second notebook: performing repeatable analyses
 
-TBD
+It's time to do some science now that we have clean, easy-to-use data.
+Instead of editing our data-cleaning notebook, let's create a second one to store analyses.
 
+Creating a second notebooks creates a problem: people may not know in which order to execute your notebooks.
+It is probably possible to infer that a notebook named "clean-data.ipynb" must be ran before "train-model.ipynb",
+but there will be cases where order is not clear and science abhors ambiguity.
+
+My strategy is to prepend notebook names with a number so that the order they must be run is clear.
+Attach a `0_` to the beginning of your first notebook's name and then saved a renamed version (*hint*: `git mv`)
+
+You are now ready to make your first "analysis notebook" and make sure to name it something starting with `1_`. 
+Remember to also:
+
+1. Keep a notebook simple. One key point per notebook!
+1. Write it like a paper. Start with a title and motivation, break the story into multiple paragraphs with clear purposes.
+1. Ensure it works. Restart and re-run your notebook before committing it.
+
+### Saving intermediate results
+
+Storing all of your study into a single notebook is bad for many reasons.
+For one, a big notebook containing many research threads is hard to understand. Split to keep things focused and tractable.
+Some parts of your analysis could also take a long time to run and re-running before starting on a new analysis will become inefficient.
+In order to break your notebook into multiple parts, you need a reliable method for saving outputs notebooks.
+
+My approach to saving results from notebooks is [Pickle](https://docs.python.org/3/library/pickle.html).
+Pickle is Python's mechanism for saving arbitrary objects to disk and most types of Python variables support it.
+Use pickle by calling [`pickle.dump`](https://docs.python.org/3/library/pickle.html#pickle.dump):
+
+```python
+import pickle as pkl
+with open('model.pkl', 'wb') as fp:  # the 'b' is important, it means to write in binary format
+    pkl.dump(model, fp)
+```
+
+You can then load that object back in another notebook:
+
+```python
+with open('model.pkl', 'rb') as fp:  # as above, the 'b' is critical
+    model = pkl.load(fp)
+```
+
+Pickle has its problems, but I find they are outweighed by the benefits:
+
+- "Pickle is dangerous." Don't load a pickle from someone you don't know, as it's possible to write a pickle file to do mean things when you load one.
+- "Pickle is not archive ready." Pickle files can only be read by Python with similar libraries to what was used to save them. So, they can only be used if you write them [from a well-defined environment](#add-a-python-environment). If you can save your data in another format (like a dataset as CSV, or a Tensorflow model as HDF5), do that instead.
+- "Pickles are huge." Pickle files are size hogs. If you need to, save them with compression (**hint**: [`with gzip.open(...`](https://docs.python.org/3/library/gzip.html))
+
+I write these intermediate files (in pickle or otherwise) in the same directory as the notebooks.
+
+### Collecting paper and presentation-ready figures
+
+Another intermediate result from a notebook is a set of figures. 
+I try to avoid needing to re-run my analysis to make a figure, so I do two things:
+
+1. **Save figures to disk**. I put my figures in a special directory (named "figures") and save a version with a size appropriate for a presentation or paper.
+   That code usually looks something like.
+   
+```python
+from matplotlib import pyplot as plt
+fig, ax = plt.subplots(figsize=(3.5, 2.))  # Column width ~3.5in
+
+ax.plot(data['x'], data['y'])
+ax.set_xlabel('x')
+ax.set_ylabel('y')
+
+fig.tight_layout()  # Places everything neatly inside the figure
+fig.savefig('figures/plot.png', dpi=320)  # dpi=320 makes it usable in slides and papers
+fig.savefig('figures/plot.pdf')  # saving a PDF copy is good for Overleaf and many publishers
+```
+
+2. **Make a special notebook for plotting**. If I have a figure I know I'm going to tweak often, I put it in its own notebook that reads from the output files from a previous notebook. That way, I need not rerun notebooks each time I want to do something unrelated like change the font size or colors in a plot.
 
 ## Some time later: Publication!
 
