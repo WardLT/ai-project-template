@@ -1,8 +1,8 @@
-## First Steps
+# Step-by-Step to Reproducible Data Science
 
 The following sections are a step-by-step on how to build your project from scratch.
 
-### Start a Git Repository
+## Start a Git Repository
 
 Git is a "version-control" system that lets you keep track of incremental changes in your project.
 You can use git to record why you changed a specific line in a file,
@@ -24,7 +24,7 @@ Calling `git commit` will ask you for a short description about the changes you 
 
 See [GitHub's tutorial](https://docs.github.com/en/get-started/quickstart) for a more in-depth guide to git. 
 
-### Sync your repository to GitHub
+## Sync your repository to GitHub
 
 Now that your have your first commit, it is time to push it to GitHub.
 
@@ -35,7 +35,7 @@ You do not need to initialize it with anything (e.g., a `README.md`, or ignore f
 
 GitHub will give you some lines on how to push your existing repository up to GitHub.
 
-### Add a Python environment
+## Add a Python environment
 
 Keeping track of which versions of libraries you use is key for others to reproduce your science later.
 
@@ -82,3 +82,67 @@ conda env create --file environment.yml --force
 Once you've done this, follow Anaconda's instructions to active your new environment and get ready to do reproducible research!
 
 > **Note**: Rather than adding new packages to an environment using `conda install`, I typically edit the environment file and re-build the environemnt from scratch. Rebuilding it myself each time I make changes helps ensure someone else can build it later.
+
+## Storing your raw data
+
+You've now created a git repository, made it available on GitHub, and created your Python environment. 
+The next step is to start doing science, which starts with data.
+
+The initial part of my projects often involves two kind of :
+
+1. *Raw Data*: Data in whatever form you are provided it. This data is to be preserved without modification, but you need to be explict about where it comes from.
+1. *Cleaned Data*: Data rendered into an easy-to-use format (e.g., JSON, CSV, HDF5). It should have only the information from the Raw Data that you find useful for your science.
+
+I place both datasets in a folder in the root directory named `data`, and put the raw data in `raw` will place the cleaned data in `clean`. 
+
+> **Note**: See the example repository's layout for a picture on what this works.
+
+Download your raw data into the `data/raw` folder and place a text file (in Markdown format, perhaps 🤔) in that folder describing where you got it from.
+
+
+### Sidebar: How to share your data
+
+Your raw and processed data may be too large to store in `git` on GitHub, which is best for files smaller than 10MB. If it's not, commit your data to GitHub (`git add` then `git commit`) and rest comfortably that it is accessible to tohers.
+
+Instead, my recommendation is to place them on a data source your team can access (e.g., at a computing center, Box) for now and be prepared to publish them later. We'll talk [about publication in a later section](#some-time-later-publication).
+
+## A first notebook: Cleaning your data
+
+The first notebook in most of my projects is to [make](https://github.com/globus-labs/g4mp2-atomization-energy/blob/master/1_convert_data.ipynb) [data](https://github.com/globus-labs/toxicity-prediction/blob/master/admet/0_admetsar-online-datasets.ipynb) [readable](https://github.com/globus-labs/stopping-power-ml/blob/master/1_parse-qbox-data.ipynb) by Pandas.
+
+Start off by writing a notebook that reads in your data then saves it to the `data/clean` directory in whatever format you think is best.
+
+My recommendation is to stick to formats that are easy to use in other codes, such as JSON, CSV, or HDF5.
+
+Once you are done with the notebook, be sure to "Restart and Run All" before saving it and commiting the notebook into your repository (i.e., `git add <your notebook>`, `git commit`).
+Commit your data if it is small enough (<10 MB).
+
+### Effective Jupyter
+
+Jupyter is a great tool for communicating computational science but, like any tool, it takes practice to use effectively.
+
+I write Jupyter notebooks as if I am writing a paper. 
+Each notebook starts out with a title and topic sentence about what the notebook is doing. 
+
+![header](./img/notebook-header.png)
+
+The rest of the notebook is a series of subsections (labeled with a header) each containing...
+
+*a topic sentence defining what I'm going to do,...*
+
+*a few steps of code with text explaining what the code does,..*
+
+*and a summary statement often with a visualization showing that I did what I told you I'd do.*
+
+![ppg](./img/notebook-paragraph.png)
+
+I'm not perfect about following this pattern but, when I do, my notebooks are easily understood by others.
+
+## A second notebook: performing repeatable analysis
+
+TBD
+
+
+## Some time later: Publication!
+
+TBD

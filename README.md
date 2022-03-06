@@ -30,6 +30,7 @@ Specifically, you should be familiar with:
 1. *Using the command line.* If you don't, check out [DjangoGirls' tutorial](https://tutorial.djangogirls.org/en/intro_to_command_line/). Also, prepared to experience a command-line text editor like [vim](https://www.openvim.com/) or [nano](https://www.howtogeek.com/howto/42980/the-beginners-guide-to-nano-the-linux-command-line-text-editor/)
 1. *Python basics.* Know how to make a script and execute it from the command line
 1. *Jupyter*. I think Jupyter is a fantastic tool, if [used](https://docs.google.com/presentation/d/1n2RlMdmv1p25Xy5thJUhkKGvjtV-dkAIsUXP-AL4ffI/edit#slide=id.g362da58057_0_1) [effectively](https://www.youtube.com/watch?v=7jiPeIFXb6U). [Jupyter's website](https://jupyter.org/) does a good job of explaining what you can do with them.
+1. *Pandas*. A great tool for manipulating tabular data. Among my favorite Python libraries, and one you can learn [in 10 minutes].
 
 We are going to teach you the basics of:
 
