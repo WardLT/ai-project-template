@@ -9,6 +9,8 @@ The organization is designed with a few goals in mind:
 1. *Publication*: Minimal effort should be required to archive the project
 1. *Efficiency*: None of the above goals should interfere with executing the science
 
+This repository is an accompaniment to a "How to Be Reproducible without Trying" [presentation](https://1drv.ms/p/s!AswJEkleh18Ah5NfbU9yMHdpEenQEg?e=iRt1Ce).
+
 ## How to use this repository
 
 Easy ways to get started are either to create your own GitHub repository then mirror the layout here as you progress,
